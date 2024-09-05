@@ -30,6 +30,9 @@
             display: flex;
             justify-content: center;
         }
+        #qrcode canvas {
+            margin: 0 auto;
+        }
         #downloadButton {
             margin-top: 20px;
             display: none;
@@ -85,11 +88,15 @@
             vCardData += `END:VCARD`;
 
             // Generate QR code
-            var qrCode = new QRCode(qrCodeContainer, {
+            new QRCode(qrCodeContainer, {
                 text: vCardData,
                 width: 256,
                 height: 256
             });
+
+            // Ensure QR code canvas stays centered
+            var qrCodeCanvas = qrCodeContainer.querySelector("canvas");
+            qrCodeCanvas.style.margin = "0 auto";
 
             // Show download button
             document.getElementById("downloadButton").style.display = "inline-block";
