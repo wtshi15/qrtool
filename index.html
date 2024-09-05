@@ -5,63 +5,129 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WT's Contact QR Code Tool</title>
     <style>
+        /* Body styling for a sleek look */
         body {
-            font-family: Arial, sans-serif;
-            margin: 50px;
-            text-align: center;
-        }
-        .form-group {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f0f2f5;
             display: flex;
             justify-content: center;
             align-items: center;
-            margin-bottom: 10px;
+            min-height: 100vh;
+            margin: 0;
         }
+
+        /* Container to center and structure everything */
+        .container {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 320px;
+        }
+
+        /* Title Styling */
+        h1 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        /* Form group for clean input fields layout */
+        .form-group {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
         .form-group label {
-            width: 100px;
-            text-align: right;
-            margin-right: 10px;
+            flex-basis: 35%;
+            text-align: left;
+            color: #555;
         }
+
         .form-group input {
-            width: 200px;
-            padding: 5px;
+            flex-basis: 60%;
+            padding: 8px 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            outline: none;
         }
+
+        .form-group input:focus {
+            border-color: #007bff;
+        }
+
+        /* Button Styling */
+        button {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #downloadButton {
+            margin-top: 20px;
+            display: none;
+        }
+
+        /* QR code container with margin and centering */
         #qrcode {
             margin-top: 20px;
             display: flex;
             justify-content: center;
         }
+
         #qrcode canvas {
             margin: 0 auto;
-        }
-        #downloadButton {
-            margin-top: 20px;
-            display: none;
         }
     </style>
 </head>
 <body>
-    <h1>WT's Contact QR Code Tool</h1>
 
-    <div class="form-group">
-        <label for="nameInput">Name:</label>
-        <input type="text" id="nameInput" placeholder="Enter name" required>
+    <!-- Container holding all content -->
+    <div class="container">
+        <h1>WT's Contact QR Code Tool</h1>
+
+        <!-- Name Input -->
+        <div class="form-group">
+            <label for="nameInput">Name:</label>
+            <input type="text" id="nameInput" placeholder="Enter name" required>
+        </div>
+
+        <!-- Phone Number Input -->
+        <div class="form-group">
+            <label for="phoneInput">Phone Number:</label>
+            <input type="text" id="phoneInput" placeholder="Enter phone number" required>
+        </div>
+
+        <!-- Email Input -->
+        <div class="form-group">
+            <label for="emailInput">E-Mail:</label>
+            <input type="email" id="emailInput" placeholder="Enter email (optional)">
+        </div>
+
+        <!-- Create QR Button -->
+        <button onclick="generateQRCode()">Create</button>
+
+        <!-- QR Code Display -->
+        <div id="qrcode"></div>
+
+        <!-- Download Button -->
+        <button id="downloadButton" onclick="downloadQRCode()">Download PNG</button>
     </div>
 
-    <div class="form-group">
-        <label for="phoneInput">Phone Number:</label>
-        <input type="text" id="phoneInput" placeholder="Enter phone number" required>
-    </div>
-
-    <div class="form-group">
-        <label for="emailInput">E-Mail:</label>
-        <input type="email" id="emailInput" placeholder="Enter email (optional)">
-    </div>
-
-    <button onclick="generateQRCode()">Create</button>
-
-    <div id="qrcode"></div>
-    <button id="downloadButton" onclick="downloadQRCode()">Download PNG</button>
-
+    <!-- QR code generator library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script>
         function generateQRCode() {
