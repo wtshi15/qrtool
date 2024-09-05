@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WT's Contact QR Code Tool</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 50px;
+            text-align: center;
+        }
+        .form-group {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .form-group label {
+            width: 100px;
+            text-align: right;
+            margin-right: 10px;
+        }
+        .form-group input {
+            width: 200px;
+            padding: 5px;
+        }
+        #qrcode {
+            margin-top: 20px;
+        }
+        #downloadButton {
+            margin-top: 20px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>WT's Contact QR Code Tool</h1>
+
+    <div class="form-group">
+        <label for="nameInput">Name:</label>
+        <input type="text" id="nameInput" placeholder="Enter name" required>
+    </div>
+
+    <div class="form-group">
+        <label for="phoneInput">Phone Number:</label>
+        <input type="text" id="phoneInput" placeholder="Enter phone number" required>
+    </div>
+
+    <div class="form-group">
+        <label for="emailInput">E-Mail:</label>
+        <input type="email" id="emailInput" placeholder="Enter email (optional)">
+    </div>
+
+    <button onclick="generateQRCode()">Create</button>
+
+    <div id="qrcode"></div>
+    <button id="downloadButton" onclick="downloadQRCode()">Download PNG</button>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script>
+        function generateQRCode() {
+            var name = document.getElementById("nameInput").value;
+            var phone = document.getElementById("phoneInput").value;
+            var email = document.getElementById("emailInput").value;
+            var qrCodeContainer = document.getElementById("qrcode");
+
+            // Clear previous QR code and hide download button
+            qrCodeContainer.innerHTML = "";
+            document.getElementById("downloadButton").style.display = "none";
+
+            // Validate that required fields are filled
+            if (!name.trim() || !phone.trim()) {
+                alert("Please enter both a name and a phone number.");
+                return;
+            }
+
+            // Construct vCard data
+            var vCardData = `BEGIN:VCARD\nVERSION:3.0\nFN:${name}\nTEL:${phone}\n`;
+            if (email.trim()) {
+                vCardData += `EMAIL:${email}\n`;
+            }
+            vCardData += `END:VCARD`;
+
+            // Generate QR code
+            var qrCode = new QRCode(qrCodeContainer, {
+                text: vCardData,
+                width: 256,
+                height: 256
+            });
+
+            // Show download button
+            document.getElementById("downloadButton").style.display = "inline-block";
+        }
+
+        function downloadQRCode() {
+            var qrCodeCanvas = document.querySelector("#qrcode canvas");
+            var pngUrl = qrCodeCanvas.toDataURL("image/png");
+            var downloadLink = document.createElement("a");
+            downloadLink.href = pngUrl;
+            downloadLink.download = "contact_qr_code.png";
+            downloadLink.click();
+        }
+    </script>
+</body>
+</html>
